@@ -1,0 +1,54 @@
+{% extends 'login.html' %}
+{% load static  %}
+
+
+{% block form %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/sign.css' %}">
+
+
+        {% for message in messages %}
+        <div class="info">
+            <h3>{{ message }}</h3>
+        </div>
+        {% endfor %} 
+
+        <br>
+        <br>
+
+    <form action="" method="post">  
+        {% csrf_token %}      
+        <h2>CREATE ACCOUNT</h2>
+        {% if form.errors %}
+        <div class="errors">{{ form.errors }} </div>
+        {% endif %}
+        <span>Already have an account?<a href="{% url 'log' %}"> LOGIN</a></span> 
+        {% csrf_token %}         
+        <div class="l">
+            {{ form.first_name.label }} <br>
+            {{ form.first_name }}
+            <br>
+            {{ form.last_name.label }} <br>
+            {{ form.last_name }} 
+            <br>
+            {{ form.username.label }} <br>
+            {{ form.username }}
+            <br>
+            {{ form.phone_number.label }} <br>
+            {{ form.phone_number }}
+            <br>
+            {{ form.email.label }}  <br>
+            {{ form.email }}        
+            <br>
+            {{ form.password1.label }} <br>
+            {{ form.password1 }}
+            <br>
+            {{ form.password2.label }} <br>
+            {{ form.password2 }}
+            <br>
+            <br>
+            <button value="Create">Create</button>
+            <br>
+        </div>           
+    </form>
+{% endblock %}
+

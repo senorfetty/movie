@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pIcTuRe PeRfEcT</title>
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+    
+    <!-- style css -->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+    <!-- font stylesheet -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet"  type="text/css" href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+
+    <script src="https://kit.fontawesome.com/959f3a58a4.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="main">
+        <nav>
+            <div class="row">
+                <div class="col">
+                    <i class="fas fa-user fa-3x">
+                    <h1 class="text-uppercase">{{ request.user.username }}</h1></i>
+                </div>
+                <div class="col">
+                    <i class="fas fa-beat fa-3x">
+                    <h1>pIcTuRe 🎥 PeRfEcT</h1></i>
+                </div>
+                <div class="col">
+                    <a class="btn btn-primary btn-square me-2" href="#contact">Contact Us</a>
+                </div>
+                <div class="l">
+                    <i class="fas fa-sign-out-alt"></i><a class="btn btn-danger me-2" href="{% url 'logout' %}">LOGOUT</a>
+                </div>
+            </div>            
+        </nav>
+    </div>
+    <section>
+        <div>
+            <h1 class="display-3">Discover the Ultimate Movie Experience, Your One-Stop Movie Destination</h1>
+        </div>
+        <div class="mov">
+            <form action="" method="get">
+                <label for="movie">Enter the title of Movie or Series</label>
+                <br>
+                <input type="text" name="movie" id="movie" required>
+                <br>
+                <button value="Search">Search</button>  
+            </form>            
+        </div>
+
+        {% if movie_data %}
+        <div id="moviedetails" class="moviedata">            
+            <h2 class="display-1 text-center">{{ movie_data.Title }}</h2>
+            <p>Runtime:<span>{{ movie_data.Runtime }}</span></p>
+            <p>Content Rating :<span>{{ movie_data.Rated }}</span></p>
+            <p>Year of Release :<span>{{ movie_data.Year }}</span></p>
+            <p>Actors :<span>{{ movie_data.Actors }}</span></p>
+            <p>Plot :<span>{{ movie_data.Plot }}</span></p>
+            <p>Rating:<span>{{ movie_data.imdbRating }}</span></p>
+            <img src="{{ movie_data.Poster }}">
+        </div>
+        {% endif %}
+
+        <div>
+            <h2 class="text-uppercase text-center">New Movies</h2>
+        </div>
+        <div class="slideshow-container">
+            {% for x in new %}
+            <div class="myslides">
+                <img src="{% static 'img/' %}{{ x.image_url }}" alt="">
+            </div>
+            {% endfor %}
+            <div class="dot-container">
+                {% for x in new %}
+                <span class="dot"></span>
+                {% endfor %}
+            </div>            
+        </div>
+
+        <div class="series">
+            <h2 id="ser" class="text-uppercase text-dark">Some Top Series for you</h2>
+            <br>
+            <div class="row g-5">
+                {% for movie in m %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="post" data-rating="{{ movie.rating }}">
+                        <img src="{% static 'img/' %}{{ movie.image_url }}" alt="">
+                        <span>{{ movie.title }}</span>
+                        <div class="star-ratings"></div>
+                    </div>
+                </div>
+                {% endfor %}             
+            </div>
+        </div>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if m.has_previous %}
+                <a href="?page=1#ser">&laquo; FIRST</a>
+                <a href="?page= {{ m.previous_page_number }}#ser">PREVIOUS</a>
+                {% endif %}
+
+                <span class="current-page"> {{ m.number }}</span>
+
+                {% if m.has_next %}
+                <a href="?page= {{ m.next_page_number }}#ser">NEXT</a>
+                <a href="?page= {{ m.paginator.num_pages }}#ser">LAST &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        
+    </section>
+
+    <div class="footer">
+        <h4 class="text-uppercase text-light mb-4">Get In Touch</h4>
+        <div class=" mb-1">
+            <i class="bi bi-envelope-open text-primary me-2"></i>
+            <a href="mailto:pictureperfect@support.com">
+            <p class="mb-4 text-light" id="contact">pictureperfect@support.com</p></a>
+        </div>
+        <div class="row gx-5">
+            <p class="text-light mb-0">&copy; <a class="text-dark fw-bold" href="#">2023</a>. All Rights Reserved.</p>
+        </div>      
+    </div>
+
+
+    <script src="{% static 'js/slide.js' %}"></script>
+</body>
+</html>
